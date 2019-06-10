@@ -101,7 +101,7 @@
                 this.totals.ht =    Math.round(priceAchat / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100;
                 let tva =           (priceAchat * (parseFloat(this.prices.tva) + 100) / 100);
                 this.totals.ttc =   Math.round(tva / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100;
-                this.totals.benefice =  (Math.round((Math.round(tva / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100) - (priceAchat * (parseFloat(this.prices.tva) + 100) / 100)) * 100) / 100;
+                this.totals.benefice =  (Math.round(tva / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100) - ((Math.round(priceAchat * (parseFloat(this.prices.tva) + 100) / 100) * 100) / 100);
             }
         }
     }
