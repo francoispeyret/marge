@@ -43,6 +43,10 @@
 			<label for="resultTTC">Total TTC</label>
 			<input id="resultTTC" type="text" v-model="totals.ttc + ' €'" readonly>
 		</div>
+		<div class="form-group">
+			<label for="resultTTC">Bénéfice TTC</label>
+			<input id="resultTTC" type="text" v-model="totals.benefice + ' €'" readonly>
+		</div>
 
 
 	</div>
@@ -60,6 +64,7 @@
 	                fournisseurs: 0,
                     fournisseurs_extra: 0,
                     tva: 20,
+                    benefice: 0
                 },
                 totals: {
                     ht: 0,
@@ -87,8 +92,8 @@
                 let priceAchat;
                 if(parseFloat(this.$refs['fournisseurs'].value) > 0){
                     priceAchat =    parseFloat(this.prices.achat) * ((100 - this.$refs['fournisseurs'].value)/100);
-                } else if(parseFloat(this.marge_extra) > 0) {
-                    priceAchat =    parseFloat(this.prices.achat) * ((100 - this.marge_extra)/100);
+                } else if(parseFloat(this.fournisseurs_extra) > 0) {
+                    priceAchat =    parseFloat(this.prices.achat) * ((100 - this.fournisseurs_extra)/100);
                 } else {
                     priceAchat =    parseFloat(this.prices.achat);
                 }
@@ -96,6 +101,7 @@
                 this.totals.ht =    Math.round(priceAchat / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100;
                 let tva =           (priceAchat * (parseFloat(this.prices.tva) + 100) / 100);
                 this.totals.ttc =   Math.round(tva / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100;
+                this.totals.benefice =  (Math.round(tva / ((100 - parseFloat(this.prices.marge)) / 100) * 100) / 100) - (priceAchat * (parseFloat(this.prices.tva) + 100) / 100);
             }
         }
     }
