@@ -4,24 +4,33 @@
 		<h1>Calcul de prix</h1>
 
 		<div class="form-group">
-			<label for="prix">Prix d'achat</label>
+			<label for="prix">Prix d'achat €</label>
 			<input id="prix" type="number" v-model="prices.achat" class="form-control" @change="calcul">
 		</div>
+		<br>
 		<div class="form-group">
-			<label for="marge">Marge</label>
+			<label for="marge">Marge %</label>
 			<input id="marge" type="number" v-model="prices.marge" class="form-control" @change="calcul">
 		</div>
+		<br>
 		<div class="form-group">
-			<label for="fournisseurs">Fournisseurs</label>
-			<select name="fournisseurs" ref="fournisseurs" id="fournisseurs" @change="calcul">
+			<label for="fournisseurs">Fournisseurs %</label>
+			<select name="fournisseurs" ref="fournisseurs" id="fournisseurs" @change="calcul" v-model="prices.fournisseurs">
 				<option v-for="item in fournisseurs " :value="item.remise">{{item.name}}</option>
 			</select>
+
 		</div>
+		<div class="form-group" v-if="prices.fournisseurs <= 0">
+			<label for="marge">--- %</label>
+			<input id="fournisseurs_extra" type="number" v-model="prices.fournisseurs_extra" class="form-control" @change="calcul">
+		</div>
+		<br>
 		<div class="form-group">
-			<label for="tva">TVA</label>
+			<label for="tva">TVA %</label>
 			<input id="tva" type="number" v-model="prices.tva" class="form-control" @change="calcul">
 		</div>
 
+		<br>
 		<div class="form-group">
 			<label for="achatHT">Total Achat HT</label>
 			<input id="achatHT" type="text" v-model="totals.achats + ' €'" readonly>
@@ -48,6 +57,8 @@
                 prices: {
                     achat: 100,
                     marge: 25,
+	                fournisseurs: 0,
+                    fournisseurs_extra: 0,
                     tva: 20,
                 },
                 totals: {
@@ -76,6 +87,8 @@
                 let priceAchat;
                 if(parseFloat(this.$refs['fournisseurs'].value) > 0){
                     priceAchat =    parseFloat(this.prices.achat) * ((100 - this.$refs['fournisseurs'].value)/100);
+                } else if(parseFloat(this.marge_extra) > 0) {
+                    priceAchat =    parseFloat(this.prices.achat) * ((100 - this.marge_extra)/100);
                 } else {
                     priceAchat =    parseFloat(this.prices.achat);
                 }
@@ -94,7 +107,16 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		color: #2c3e50;
-		margin-top: 60px;
+		max-width: 410px;
+		margin: 20px auto;
+		padding: 20px;
+		border: 1px solid #eee;
+	}
+
+	h1 {
+		text-align: center;
+		margin-top: 0;
+		text-transform: uppercase;
 	}
 
 	.form-group {
